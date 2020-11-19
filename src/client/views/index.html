@@ -19,7 +19,11 @@
         <main>
             <section>
                 <form class="" onsubmit="return Client.handleSubmit(event)">
-                    <input id="name" type="text" name="input" value="" placeholder="Name">
+                    <label id="startTrip" for="start">Start date for the travel:</label>
+                        <input type="date" id="start" name="trip-start"
+                        value="2020-11-20"
+                        min="2020-11-20" max="2022-12-31">
+                    <input id="name" type="text" name="input" value="" placeholder="Place to travel to...">
                     <input type="submit" name="" value="submit" onclick="return Client.handleSubmit(event)" onsubmit="return Client.handleSubmit(event)">
                 </form>
             <section>
@@ -28,12 +32,13 @@
                 <strong>Form Results:</strong>
                 <div id="results"></div>
             </section>
+            
         </main>
 
         <footer>
             <p>This is a footer</p>
         </footer>
-        <script>
+        <!-- <script>
             // Check that service workers are supported
             if ('serviceWorker' in navigator) {
                 // Use the window load event to keep the page load performant
@@ -41,6 +46,6 @@
                     navigator.serviceWorker.register('/service-worker.js');
                 });
             }
-        </script>
+        </script> -->
     </body>
 </html>
