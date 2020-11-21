@@ -22,59 +22,49 @@ export async function handleSubmit(event) {
     let formText = document.getElementById('name').value
     let startDate = document.getElementById('start').value
     
-    let sDy = Number(startDate.substring(0,4))
-    let sDm = Number(startDate.substring(5,7))
-    let sDd = Number(startDate.substring(8,10))
-
-    let date1 = new Date(Number(yyyy),Number(mm),Number(dd));
-    let date2 = new Date(sDy,sDm,sDd);
-
-    let diff = interval(date1,date2);
-
     
+
+    // let date1 = new Date(Number(yyyy),Number(mm),Number(dd));
+    // let date2 = new Date(sDy,sDm,sDd);
+
+    // let diff = interval(date1,date2);
+    
+
     //let checkResponse = Client.checkForName(formText)
-    //Call function to post the API request and get the data from the server
-    // let serverData = postData('http://localhost:8082/geoAPI', formText)
-    // .then(serverData => serverData.json())
-    // .then(function (res) {
-    //   console.log('lat: '+ res.Lattitude + ' lon: ' + res.Longitude + ' Country: '+ res.Country)
-
-    // })
-    let serverData = postData('http://localhost:8082/geoAPI', formText)
-    .then(function(res){
-         console.log('SerData: '+ res + ' Temp: ' + res.Lattitude)})
-       
-        // .then(function(res){
-        //   console.log('SerData: '+ res + ' Temp: ' + res.lat)
-        //   let weatherData = postDataJson('http://localhost:8082/weatherAPI', res)
-        //   console.log('WeatherData: ' + weatherData)
-        // })
-        // .then(function (res) {
-        //   console.log('res: '+ res)  
-        //   updateUI(res)
-        // })
-    //Function to return the API results to the UI
-    function updateUI(res){
-        if (true){
-            console.log("The status of the API response is fine!")
-            document.getElementById('results').innerHTML = 'The requested site is: ' + res.Country + ' and will be in: ' + diff.years + ' year(s), ' + diff.months + ' month(s) and ' + diff.days + 'day(s).'
-
-        }else{
-        document.getElementById('results').innerHTML = 'The API request was faulty!'
-        }
-    }
+    console.log(formText)
+    
+    let serverData = await postData('http://localhost:8082/geoAPI', formText, startDate)
+    serverData = await serverData.json()
+    console.log('SerData: '+ serverData + ' Temp: ' + serverData.Condition)
 }
 
+function updateUI(res){
+  if (true){
+    console.log("The status of the API response is fine!")
+    document.getElementById('results').innerHTML = 'The requested site is: ' + res.Country + ' and will be in: ' + diff.years + ' year(s), ' + diff.months + ' month(s) and ' + diff.days + 'day(s).'
+  }else{
+  document.getElementById('results').innerHTML = 'The API request was faulty!'
+  }
+}
+
+
   //Function to Post the input data to the server, to call the API and receive the API data
-export async function postData( url = '', formText){
-    let response = await fetch(url, {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'text/plain',
-      },
-      body: formText,
-    })
+export async function postData( url = '', formText, travelDate){
+  const data = {
+    'city' : formText,
+    'date' : travelDate
+  }
+  console.log(data)
+  let response = await fetch(url, {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      //'Content-Type': 'text/plain',
+    },
+    //body: 'test'
+    body: JSON.stringify(data)
+})
     // try {const newData = await response.json();
     //   console.log('postData: ' + newData.Country);
       // return newData;
@@ -84,20 +74,19 @@ export async function postData( url = '', formText){
     return response;
 }
 
-export async function postDataJson( url = '', data){
-  let response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8' ,
-  },
-  body: JSON.stringify(data),
-  })
-  try {const newData = await response.json();
-    console.log(newData);
-    return newData;
-  }catch(error) {
-  console.log("error", error);
-  }
-}
-
+// export async function postDataJson( url = '', data){
+//   let response = await fetch(url, {
+//     method: 'POST', // *GET, POST, PUT, DELETE, etc.
+//     credentials: 'same-origin',
+//     headers: {
+//       'Content-Type': 'application/json; charset=utf-8' ,
+//   },
+//   body: JSON.stringify(data),
+//   })
+//   try {const newData = await response.json();
+//     console.log(newData);
+//     return newData;
+//   }catch(error) {
+//   console.log("error", error);
+//   }
+// }
