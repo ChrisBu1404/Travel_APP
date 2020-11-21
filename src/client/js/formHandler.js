@@ -34,11 +34,25 @@ export async function handleSubmit(event) {
     
     //let checkResponse = Client.checkForName(formText)
     //Call function to post the API request and get the data from the server
-    let serverData = postData('http://localhost:8082/input', formText)
-        .then(serverData => serverData.json())
-        .then(function (res) {
-            updateUI(res)
-        })
+    // let serverData = postData('http://localhost:8082/geoAPI', formText)
+    // .then(serverData => serverData.json())
+    // .then(function (res) {
+    //   console.log('lat: '+ res.Lattitude + ' lon: ' + res.Longitude + ' Country: '+ res.Country)
+
+    // })
+    let serverData = postData('http://localhost:8082/geoAPI', formText)
+    .then(function(res){
+         console.log('SerData: '+ res + ' Temp: ' + res.Lattitude)})
+       
+        // .then(function(res){
+        //   console.log('SerData: '+ res + ' Temp: ' + res.lat)
+        //   let weatherData = postDataJson('http://localhost:8082/weatherAPI', res)
+        //   console.log('WeatherData: ' + weatherData)
+        // })
+        // .then(function (res) {
+        //   console.log('res: '+ res)  
+        //   updateUI(res)
+        // })
     //Function to return the API results to the UI
     function updateUI(res){
         if (true){
@@ -61,6 +75,29 @@ export async function postData( url = '', formText){
       },
       body: formText,
     })
-    return response
+    // try {const newData = await response.json();
+    //   console.log('postData: ' + newData.Country);
+      // return newData;
+    // }catch(error) {
+    // console.log("error", error);
+    // }
+    return response;
+}
+
+export async function postDataJson( url = '', data){
+  let response = await fetch(url, {
+    method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8' ,
+  },
+  body: JSON.stringify(data),
+  })
+  try {const newData = await response.json();
+    console.log(newData);
+    return newData;
+  }catch(error) {
+  console.log("error", error);
+  }
 }
 
