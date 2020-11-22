@@ -34,13 +34,13 @@ app.get('/test', function (req, res) {
     res.send(mockAPIResponse)
 })
 
-// designates what port the app will listen to for incoming requests
-app.listen(8082, function () {
-    console.log('Example app listening on port 8082!')
-})
 
 app.post('/geoAPI', main);
 
+app.listen(8082, function () {
+    console.log('Travel app listening on port 8082!')
+    app.emit("appStarted");
+})
 
 
 async function main(req,res) {
@@ -120,3 +120,4 @@ async function getPicture(city){
     const picURL = data.hits[0].webformatURL;
     return picURL
 }
+module.exports = app
