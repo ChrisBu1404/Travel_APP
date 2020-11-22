@@ -14,13 +14,19 @@ input {
 }
 
 .form {
-    // border: 10px solid #545454;
-    // border-radius: 100px;
     padding: 10px;
     display: flex;
     flex-direction: row;
-    // align-content: space-around;
     justify-content: space-around;
+}
+
+@media (max-width: 600px) {
+    .form {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    }
 }
 
 .nerko {
@@ -32,6 +38,15 @@ input {
     border-radius: 10px;
     background-color: black;
     color: white;
+    font-size: larger;
+    max-width: 30vw;
+}
+
+#submitButton:hover {
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: white;
+    color: black;
     font-size: larger;
     max-width: 30vw;
 }
@@ -48,4 +63,9 @@ input {
 #name, #start, #end{
     border-radius: 5px;
     height: 35px;
+}
+#name:hover, #start:hover, #end:hover{
+    border-radius: 5px;
+    height: 35px;
+    background-color: lightgray;
 }

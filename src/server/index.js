@@ -21,10 +21,6 @@ const pixabayURL = 'https://pixabay.com/api/?key='
 app.use(cors())
 app.use(express.static('dist'))
 app.use(express.json())
-// app.use(function(req,res,next){
-//     res.header('Access-Control-Allow-Origin','*')
-//     res.header('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept')
-// })
 
 app.get('/', function (req, res) {
     res.sendFile('dist/index.html')
@@ -35,7 +31,7 @@ app.get('/test', function (req, res) {
 })
 
 
-app.post('/geoAPI', main);
+app.post('/getServerData', main);
 
 app.listen(8082, function () {
     console.log('Travel app listening on port 8082!')
@@ -59,6 +55,7 @@ async function main(req,res) {
         }
 
         res.send(apiData)
+
     } catch(error) {
         console.log("error", error);
         res.send('Could not get API info.')
@@ -120,4 +117,5 @@ async function getPicture(city){
     const picURL = data.hits[0].webformatURL;
     return picURL
 }
+
 module.exports = app

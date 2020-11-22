@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Travel APP</title>
         <link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Acme&family=Nerko+One&display=swap" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css2?family=Acme&family=Nerko+One&display=swap" rel="stylesheet"> 
 </head>
 
     <body>
@@ -22,35 +22,26 @@
                     <!-- <label id="startTrip" class="nerko" for="start">Where and when do you wanna travel?</label> -->
                     <div class="form">
                         <label class="nerko"> Where:
-                        <input id="name" type="text" name="input" value="" placeholder="Enter travel destination">
+                            <input id="name" type="text" name="input" value="" placeholder="Enter travel destination">
                         </label>
                         <form>
                             <label class="nerko"> From:
-                            <input type="date" id="start" name="trip-start"
-                                value=""
-                                min="2020-11-20" max="2022-12-31">
+                                <input type="date" id="start" name="trip-start"
+                                       value="" min="2020-11-20" max="2022-12-31">
                             </label>
                             <label class="nerko"> To:
-                            <input type="date" id="end" name="trip-end"
-                                value=""
-                                min="2020-11-20" max="2022-12-31">
+                                <input type="date" id="end" name="trip-end"
+                                       value="" min="2020-11-20" max="2022-12-31">
                             </label>
-                            
                         </form>
                     </div>
                     <div id="buttonContainer">
                         <input type="submit" id="submitButton" class="nerko" name="" value="Submit" onclick="return Client.handleSubmit(event)" onsubmit="return Client.handleSubmit(event)">
                     </div>
                 </form>
-            
-                <div class="nerko" id="searchResults">
-                    
-                </div>
+                <div class="nerko" id="searchResults"> </div>
             </section>
-            
-            <section id="results">
-
-            </section>
+            <section id="results"> </section>
             <section id="resultsContainer">
                 <div id="pic" class="results"></div>
                 <div id="weather" class="results nerko" ></div>

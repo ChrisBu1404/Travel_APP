@@ -5,17 +5,14 @@ export async function postData( url = '', formText, travelDate){
       'city' : formText,
       'date' : travelDate
     }
-  
+
     let response = await fetch(url, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
       credentials: 'same-origin',
       headers: {
       'Content-Type': 'application/json',
-  
       },
-      //body: 'test'
       body: JSON.stringify(data)
-  })
-  
+    })
       return response;
-  }
+}
