@@ -3,6 +3,7 @@ dotenv.config();
 //API imports
 const API_KEY_Weatherbit = process.env.API_KEY_Weatherbit;
 const userNameGeoNames = process.env.user_name_geoNames;
+const API_KEY_Pixabay = process.env.API_KEY_Pixabay;
 var path = require('path')
 const express = require('express')
 const mockAPIResponse = require('./mockAPI.js')
@@ -15,6 +16,7 @@ const moment = require('moment')
 const geoNamesURL = 'http://api.geonames.org/searchJSON?name_equals='
 const weatherBitCurrentURL = 'https://api.weatherbit.io/v2.0/current?'
 const weatherBitHistoryURL = 'https://api.weatherbit.io/v2.0/history/hourly?'
+const pixabayURL = 'https://pixabay.com/api/?key='
 
 app.use(cors())
 app.use(express.static('dist'))
@@ -42,22 +44,21 @@ app.post('/geoAPI', main);
 
 
 async function main(req,res) {
-    console.log(req.body)
     const {city,date} = req.body
     const dateObj = getDates(date)
-    console.log(city + ' has been requested.')
     try {
-        const response = await fetch(geoNamesURL + city + "&featureClass=P" + "&username=" + userNameGeoNames)
-        const data = await response.json();
-        const geoData = {
-            longitude : data.geonames[0].lng,
-            lattitude : data.geonames[0].lat,
-            country : data.geonames[0].countryName
-        }
-        //res.send(apiData);
+        const geoData = await getGeoData(city)
         const weather = await getWeather(geoData.lattitude,geoData.longitude,dateObj)
+        const picture = await getPicture(city)
 
-        res.send(weather)
+        const apiData = {
+            geoData : geoData,
+            weather : weather,
+            picture : picture,
+            daysUntil : dateObj.daysUntil
+        }
+
+        res.send(apiData)
     } catch(error) {
         console.log("error", error);
         res.send('Could not get API info.')
@@ -70,7 +71,6 @@ function getDates(dateString) {
     const date = moment(dateString)
     const today = moment()
     const daysUntil = date.diff(today,'days')
-    console.log(date + ' DaysUntil: ' + daysUntil)
     const dates = {
         travelDate : date,
         daysUntil : daysUntil
@@ -82,7 +82,6 @@ async function getWeather(lat,lon,dateObj){
     if (dateObj.daysUntil <= 7){
         const weatherDataresponse = await fetch(weatherBitCurrentURL + 'lat=' + lat + "&lon=" + lon + "&key=" + API_KEY_Weatherbit)
         const weatherData = await weatherDataresponse.json();
-        //console.log(weatherData)
         const weather =
             {
             'Condition': weatherData.data[0].weather.description,
@@ -95,7 +94,6 @@ async function getWeather(lat,lon,dateObj){
         const weatherDataresponse = await fetch(weatherBitHistoryURL + 'lat=' + lat + "&lon=" + lon + "&start_date=" +
         histDate + '&end_date=' + histDateEnd +  "&key=" + API_KEY_Weatherbit)
         const weatherData = await weatherDataresponse.json();
-        console.log(weatherData)
         const weather =
             {
             'Condition': weatherData.data[0].weather.description,
@@ -103,4 +101,22 @@ async function getWeather(lat,lon,dateObj){
         }
         return weather
     }
+}
+
+async function getGeoData(city){
+    const response = await fetch(geoNamesURL + city + "&featureClass=P" + "&username=" + userNameGeoNames)
+    const data = await response.json();
+    const geoData = {
+        longitude : data.geonames[0].lng,
+        lattitude : data.geonames[0].lat,
+        country : data.geonames[0].countryName
+    }
+    return geoData;
+}
+
+async function getPicture(city){
+    const response = await fetch(pixabayURL + API_KEY_Pixabay + '&q=' + city + '&image_type=photo')
+    const data = await response.json();
+    const picURL = data.hits[0].webformatURL;
+    return picURL
 }

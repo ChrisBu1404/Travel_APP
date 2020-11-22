@@ -21,34 +21,37 @@ export async function handleSubmit(event) {
     // check what text was put into the form field
     let formText = document.getElementById('name').value
     let startDate = document.getElementById('start').value
-    
-    
-
-    // let date1 = new Date(Number(yyyy),Number(mm),Number(dd));
-    // let date2 = new Date(sDy,sDm,sDd);
-
-    // let diff = interval(date1,date2);
-    
 
     //let checkResponse = Client.checkForName(formText)
     console.log(formText)
-    
+
     let serverData = await postData('http://localhost:8082/geoAPI', formText, startDate)
     serverData = await serverData.json()
-    console.log('SerData: '+ serverData + ' Temp: ' + serverData.Condition)
+    updateUI(serverData,formText)
 }
 
-function updateUI(res){
-  if (true){
+function updateUI(res,formText){
+  if (res){
     console.log("The status of the API response is fine!")
-    document.getElementById('results').innerHTML = 'The requested site is: ' + res.Country + ' and will be in: ' + diff.years + ' year(s), ' + diff.months + ' month(s) and ' + diff.days + 'day(s).'
+    if (res.daysUntil === 0){
+    document.getElementById('results').innerHTML = 'Your trip to ' + formText + ', ' + res.geoData.country 
+    + ' starts today. Get ready!'
+    } else {
+      document.getElementById('results').innerHTML = 'Your trip to ' + formText + ', ' + res.geoData.country 
+    + ' starts in: ' + res.daysUntil + ' day(s).'
+    }
+    document.getElementById('pic').innerHTML = "<img src="+ res.picture + " width=\"300px\" alt=\"City Picture\">  </img>"
+    if (res.daysUntil <=7){
+      document.getElementById('weather').innerHTML = "The current weather is " + res.weather.Condition.toLowerCase() + " with a temperature of " + res.weather.Temperature + "&#8451."
+    } else {
+      document.getElementById('weather').innerHTML = "The weather at the time of the trip is typically " + res.weather.Condition.toLowerCase() + " with a temperature of " + res.weather.Temperature + "&#8451."
+    }
   }else{
   document.getElementById('results').innerHTML = 'The API request was faulty!'
   }
 }
 
-
-  //Function to Post the input data to the server, to call the API and receive the API data
+//Function to Post the input data to the server, to call the API and receive the API data
 export async function postData( url = '', formText, travelDate){
   const data = {
     'city' : formText,
@@ -59,34 +62,12 @@ export async function postData( url = '', formText, travelDate){
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     credentials: 'same-origin',
     headers: {
-      'Content-Type': 'application/json',
-      //'Content-Type': 'text/plain',
+    'Content-Type': 'application/json',
+
     },
     //body: 'test'
     body: JSON.stringify(data)
 })
-    // try {const newData = await response.json();
-    //   console.log('postData: ' + newData.Country);
-      // return newData;
-    // }catch(error) {
-    // console.log("error", error);
-    // }
+
     return response;
 }
-
-// export async function postDataJson( url = '', data){
-//   let response = await fetch(url, {
-//     method: 'POST', // *GET, POST, PUT, DELETE, etc.
-//     credentials: 'same-origin',
-//     headers: {
-//       'Content-Type': 'application/json; charset=utf-8' ,
-//   },
-//   body: JSON.stringify(data),
-//   })
-//   try {const newData = await response.json();
-//     console.log(newData);
-//     return newData;
-//   }catch(error) {
-//   console.log("error", error);
-//   }
-// }

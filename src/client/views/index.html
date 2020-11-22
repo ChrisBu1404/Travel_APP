@@ -2,37 +2,49 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <title>Test</title>
-    </head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Travel APP</title>
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Acme&family=Nerko+One&display=swap" rel="stylesheet"> 
+</head>
 
     <body>
 
         <header>
             <div class="">
-                Logo
-            </div>
-            <div class="">
-                navigation
+                Travel APP
             </div>
         </header>
 
         <main>
             <section>
-                <form class="" onsubmit="return Client.handleSubmit(event)">
-                    <label id="startTrip" for="start">Start date for the travel:</label>
-                        <input type="date" id="start" name="trip-start"
-                        value="2020-11-20"
-                        min="2020-11-20" max="2022-12-31">
-                    <input id="name" type="text" name="input" value="Braunschweig" placeholder="Place to travel to...">
-                    <input type="submit" name="" value="submit" onclick="return Client.handleSubmit(event)" onsubmit="return Client.handleSubmit(event)">
+                <form class="allForm" onsubmit="return Client.handleSubmit(event)">
+                    <label id="startTrip" class="nerko" for="start">Where and when do you wanna travel?</label>
+                    <div class="form">
+                        <input id="name" type="text" name="input" value="Braunschweig" placeholder="Enter travel destination">
+                        <form>
+                            <label class="nerko">
+                            <input type="date" id="start" name="trip-start"
+                                value=""
+                                min="2020-11-20" max="2022-12-31">
+                            </label>
+                        </form>
+                    </div>
+                    <input type="submit" id="submitButton" class="nerko" name="" value="Submit" onclick="return Client.handleSubmit(event)" onsubmit="return Client.handleSubmit(event)">
                 </form>
-            <section>
-
-            <section>
-                <strong>Form Results:</strong>
-                <div id="results"></div>
+            
+                <div class="nerko" id="searchResults">
+                    <strong>Search results:</strong>
+                </div>
             </section>
             
+            <section id="results">
+
+            </section>
+            <section id="resultsContainer">
+                <div id="pic" class="results"></div>
+                <div id="weather" class="results nerko" ></div>
+            </section>
         </main>
 
         <footer>
