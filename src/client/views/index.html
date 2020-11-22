@@ -19,22 +19,32 @@
         <main>
             <section>
                 <form class="allForm" onsubmit="return Client.handleSubmit(event)">
-                    <label id="startTrip" class="nerko" for="start">Where and when do you wanna travel?</label>
+                    <!-- <label id="startTrip" class="nerko" for="start">Where and when do you wanna travel?</label> -->
                     <div class="form">
-                        <input id="name" type="text" name="input" value="Braunschweig" placeholder="Enter travel destination">
+                        <label class="nerko"> Where:
+                        <input id="name" type="text" name="input" value="" placeholder="Enter travel destination">
+                        </label>
                         <form>
-                            <label class="nerko">
+                            <label class="nerko"> From:
                             <input type="date" id="start" name="trip-start"
                                 value=""
                                 min="2020-11-20" max="2022-12-31">
                             </label>
+                            <label class="nerko"> To:
+                            <input type="date" id="end" name="trip-end"
+                                value=""
+                                min="2020-11-20" max="2022-12-31">
+                            </label>
+                            
                         </form>
                     </div>
-                    <input type="submit" id="submitButton" class="nerko" name="" value="Submit" onclick="return Client.handleSubmit(event)" onsubmit="return Client.handleSubmit(event)">
+                    <div id="buttonContainer">
+                        <input type="submit" id="submitButton" class="nerko" name="" value="Submit" onclick="return Client.handleSubmit(event)" onsubmit="return Client.handleSubmit(event)">
+                    </div>
                 </form>
             
                 <div class="nerko" id="searchResults">
-                    <strong>Search results:</strong>
+                    
                 </div>
             </section>
             
@@ -48,7 +58,7 @@
         </main>
 
         <footer>
-            <p>This is a footer</p>
+            <p>Travel app by Christian Busse</p>
         </footer>
         <!-- <script>
             // Check that service workers are supported

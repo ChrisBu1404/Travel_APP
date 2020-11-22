@@ -1,5 +1,5 @@
 import { checkForName } from './js/nameChecker'
-import { handleSubmit } from './js/formHandler'
+import { handleSubmit } from './js/app'
 import { interval } from './js/getDateDiff'
 
 import './styles/resets.scss'

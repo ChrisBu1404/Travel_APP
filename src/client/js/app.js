@@ -1,17 +1,15 @@
 import { interval } from './getDateDiff'
 const fetch = require('node-fetch')
+const moment = require('moment')
 
-let today = new Date();
-   const dd = String(today.getDate()).padStart(2, '0');
-   const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-   const yyyy = today.getFullYear();
+const today = moment().format('YYYY-MM-DD')
+const tomorrow = moment().add(1,'days').format('YYYY-MM-DD')
 
-   today = yyyy + '-' + mm + '-' + dd;
-
-    
 
 document.getElementById('start').value = today;
 document.getElementById('start').min = today;
+document.getElementById('end').value = tomorrow;
+document.getElementById('end').min = tomorrow;
 
 
 
@@ -21,24 +19,32 @@ export async function handleSubmit(event) {
     // check what text was put into the form field
     let formText = document.getElementById('name').value
     let startDate = document.getElementById('start').value
+    let endDate = document.getElementById('end').value
+
+    const tripDuration = interval(startDate,endDate)
 
     //let checkResponse = Client.checkForName(formText)
-    console.log(formText)
+    
 
     let serverData = await postData('http://localhost:8082/geoAPI', formText, startDate)
     serverData = await serverData.json()
-    updateUI(serverData,formText)
+    if (formText === ""){
+      alert('Please enter a destination')
+    } else {
+      updateUI(serverData,formText,tripDuration)
+    }
 }
 
-function updateUI(res,formText){
+function updateUI(res,formText,tripDuration){
   if (res){
     console.log("The status of the API response is fine!")
+    document.getElementById('searchResults').innerHTML ="<strong>Search results:</strong>"
     if (res.daysUntil === 0){
     document.getElementById('results').innerHTML = 'Your trip to ' + formText + ', ' + res.geoData.country 
-    + ' starts today. Get ready!'
+    + ' starts soon and will be for ' + tripDuration + ' day(s). Get ready!'
     } else {
       document.getElementById('results').innerHTML = 'Your trip to ' + formText + ', ' + res.geoData.country 
-    + ' starts in: ' + res.daysUntil + ' day(s).'
+    + ' starts in: ' + res.daysUntil + ' day(s) and will be for ' + tripDuration + ' day(s).'
     }
     document.getElementById('pic').innerHTML = "<img src="+ res.picture + " width=\"300px\" alt=\"City Picture\">  </img>"
     if (res.daysUntil <=7){
@@ -57,7 +63,7 @@ export async function postData( url = '', formText, travelDate){
     'city' : formText,
     'date' : travelDate
   }
-  console.log(data)
+
   let response = await fetch(url, {
     method: 'POST', // *GET, POST, PUT, DELETE, etc.
     credentials: 'same-origin',
